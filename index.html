@@ -46,171 +46,23 @@
             <div class="search-bar col-md-6 mx-auto">
                 <h1 class="text-center">Lyrics Search</h1>
                 <div class="search-box my-5">
-                    <input type="text" class="form-control" placeholder="Enter your artist song name">
-                    <button class="btn btn-success search-btn">Search</button>
+                        <input id="input-song" type="text" class="form-control" placeholder="Enter your artist song name">
+                        <button id="search-song" class="btn btn-success search-btn">Search</button>
                 </div>
             </div>
-            <!-- === Simple results === -->
-            <div class="d-flex justify-content-center">
-                <div class="">
-                    <p class="author lead"><strong>Purple Noon</strong> Album by <span>Washed Out</span> <button class="btn btn-success">Get Lyrics</button></p>
-                    <p class="author lead"><strong>Purple Noon</strong> Album by <span>Washed Out</span> <button class="btn btn-success">Get Lyrics</button></p>
-                    <p class="author lead"><strong>Purple Noon</strong> Album by <span>Washed Out</span> <button class="btn btn-success">Get Lyrics</button></p>
-                    <p class="author lead"><strong>Purple Noon</strong> Album by <span>Washed Out</span> <button class="btn btn-success">Get Lyrics</button></p>
-                    <p class="author lead"><strong>Purple Noon</strong> Album by <span>Washed Out</span> <button class="btn btn-success">Get Lyrics</button></p>
-                </div>
-            </div>
+
+
             <!-- Single Lyrics -->
-            <div class="single-lyrics text-center">
-                <button class="btn go-back">&lsaquo;</button>
-                <h2 class="text-success mb-4">Pentatonix - Na Na Na</h2>
-                <pre class="lyric text-white">
-    Wont go whistling like the wind blows,
-    Looking out my window,
-    Just to see the shine
-    Maybe you might call it crazy,
-    How Im acting lately,
+            <div id="lyrics">
 
-    Skipping through the sky
-
-
-
-     I see so clearly,
-
-    Why Im always feeling free.
-
-    So I sleep when my dreams,
-
-    Looking like reality
-
-
-
-    (Gonna feel it! Na na na...) x4
-
-
-
-    Gonna feel it!
-
-
-
-    I know where the greener grass grows
-
-    Youll just have to follow
-
-    To the other side
-
-
-
-     Lets go tiptoe on a tight rope,
-
-    Fallings only natural
-
-    Just spread your wings and fly
-
-
-
-    Youll see so clearly,
-
-    Why Im always feeling free.
-
-    So I sleep when our dreams
-
-    Looking like reality
-
-
-
-    (Gonna feel it! Na na na...) x4
-
-
-
-    Bring it down like
-
-    Ohh way oh
-
-    Yeah yeah yeah yeah yeah yeah
-
-    Break it down like
-
-    Ohh way oh
-
-     Yeah, yeah, yeah...
-
-    All around like
-
-    Ohh way oh
-
-    Yeah, yeah, yeah...
-
-    Sing it loud like!
-
-    Ohh way oh
-
-    Ah oo oo ooo
-
-
-
-     Gonna feel it! (Na na na...)
-
-     Make it sound like! (Na na na...)
-
-    All around like! (Na na na...)
-
-    Sing it loud like! (Na na na...)
-
-    Gonna feel like! (Na na na...)
-                </pre>
             </div>
+
             <!-- === Fancy results === -->
-            <div class="search-result col-md-8 mx-auto py-4">
-                <!-- single result -->
-                <div class="single-result row align-items-center my-3 p-3">
-                    <div class="col-md-9">
-                        <h3 class="lyrics-name">Purple Noon</h3>
-                        <p class="author lead">Album by <span>Washed Out</span></p>
-                    </div>
-                    <div class="col-md-3 text-md-right text-center">
-                        <button class="btn btn-success">Get Lyrics</button>
-                    </div>
-                </div>
-                <!-- ./ single result -->
-
-                <!-- single result -->
-                <div class="single-result row align-items-center my-3 p-3">
-                    <div class="col-md-9">
-                        <h3 class="lyrics-name">Purple Noon</h3>
-                        <p class="author lead">Album by <span>Washed Out</span></p>
-                    </div>
-                    <div class="col-md-3 text-md-right text-center">
-                        <button class="btn btn-success">Get Lyrics</button>
-                    </div>
-                </div>
-                <!-- ./ single result -->
-                <!-- single result -->
-                <div class="single-result row align-items-center my-3 p-3">
-                    <div class="col-md-9">
-                        <h3 class="lyrics-name">Purple Noon</h3>
-                        <p class="author lead">Album by <span>Washed Out</span></p>
-                    </div>
-                    <div class="col-md-3 text-md-right text-center">
-                        <button class="btn btn-success">Get Lyrics</button>
-                    </div>
-                </div>
-                <!-- ./ single result -->
-                <!-- single result -->
-                <div class="single-result row align-items-center my-3 p-3">
-                    <div class="col-md-9">
-                        <h3 class="lyrics-name">Purple Noon</h3>
-                        <p class="author lead">Album by <span>Washed Out</span></p>
-                    </div>
-                    <div class="col-md-3 text-md-right text-center">
-                        <button class="btn btn-success">Get Lyrics</button>
-                    </div>
-                </div>
-                <!-- ./ single result -->
+            <div id="result" class="search-result col-md-8 mx-auto py-4">
+                <!-- single result --> 
             </div>
 
-
-
+        
         </main>
     </div>
     <!-- Optional JavaScript -->
@@ -220,6 +72,80 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <!-- Custom Script Here -->
+    <script>
+
+
+            document.getElementById('search-song').addEventListener('click', searchSong);
+
+            const inputSong = document.getElementById('input-song');
+            inputSong.addEventListener('keypress', function(){
+                if(event.keyCode === 13){
+                    searchSong();
+                }
+            })
+            
+            // showing search result from 1 - 10
+            function searchSong(){
+                document.getElementById('result').innerHTML = '';
+                document.getElementById('lyrics').innerHTML = '';
+                const inputSong = document.getElementById('input-song').value;
+                fetch(`https://api.lyrics.ovh/suggest/${inputSong}`)
+                .then(res => res.json())
+                .then(data => { 
+                    dataStorage = data;
+                    for (let i = 0; i < data.data.length; i++) {
+                        const title = data.data[i].title;
+                        const artistName = data.data[i].artist.name;
+                        let songDuration = data.data[i].duration;
+                        songDuration = parseFloat(songDuration);
+                        const id = data.data[i].id;
+                        document.getElementById('result').innerHTML += `<div class="single-result row align-items-center my-3 p-3">
+                    <div class="col-md-4">
+                        <h3 class="lyrics-name">${title}</h3>
+                    <p class="author lead">Album by <span>${artistName}</span></p> 
+                    <p class="author lead"> Song Duration: ${songDuration}s </div>
+                    <div class="col-md-4 text-md-right text-center">
+                        <a href="#lyrics"><button onClick="watchLyrics(${id})" class="position btn btn-success">Get Lyrics</button></a>
+                    </div>
+                </div>`
+                if(i == 9){
+                        break;
+                    }   
+                }
+                
+            })
+        }
+
+        // watch lyrics button and show lyrics
+        function watchLyrics(id){
+                for (let i = 0; i < 10; i++) {
+                if(dataStorage.data[i].id == id){
+                    const artistName = dataStorage.data[i].artist.name;
+                    const songTitle = dataStorage.data[i].title;
+                    fetch(`https://api.lyrics.ovh/v1/${artistName}/${songTitle}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        let lyrics = data.lyrics;
+                        if(lyrics == undefined){
+                            lyrics = `Lyrics Not Found.`;
+                        }
+                        document.getElementById('lyrics').innerHTML = 
+                        `<div class="single-lyrics text-center">
+                            <h2 class="text-success mb-4">${songTitle} - ${artistName}</h2>
+                            <pre class="lyric text-white">${lyrics}</pre>
+                       </div>`
+                    
+                  document.getElementById('result').style.display='none';
+                    })
+                    
+                    
+                }
+            }
+            
+            
+        }
+
+    </script>
 
 </body>
 
